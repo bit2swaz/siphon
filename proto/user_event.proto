@@ -1,0 +1,12 @@
+syntax = "proto3";
+package siphon;
+option go_package = "github.com/bit2swaz/siphon/proto/gen/go/siphon";
+
+message UserEvent {
+  string user_id    = 1;
+  string video_id   = 2;
+  string event_type = 3;
+  int64  timestamp  = 4;
+  float  watch_frac = 5;
+  string session_id = 6;
+}

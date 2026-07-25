@@ -1,0 +1,13 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: feed-api
+    static_configs:
+      - targets: ["feed-api:8005"]
+  - job_name: dashboard-api
+    static_configs:
+      - targets: ["dashboard-api:8006"]
+  - job_name: ingest-service
+    static_configs:
+      - targets: ["ingest-service:8001"]

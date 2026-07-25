@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+node_modules/
+CLAUDE.md
+dist/
+.env
+*.pb.go
+*_pb2.py
+*_pb2_grpc.py
+*.pb.js

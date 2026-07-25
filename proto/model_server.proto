@@ -1,0 +1,37 @@
+syntax = "proto3";
+package siphon;
+option go_package = "github.com/bit2swaz/siphon/proto/gen/go/siphon";
+
+service ModelServer {
+  rpc Score(ScoreRequest) returns (ScoreResponse);
+  rpc Reload(ReloadRequest) returns (ReloadResponse);
+}
+
+message ScoreRequest {
+  repeated float user_embed  = 1;
+  repeated ItemEmbed items   = 2;
+}
+
+message ItemEmbed {
+  string video_id            = 1;
+  repeated float item_embed  = 2;
+}
+
+message ScoreResponse {
+  repeated ItemScore scores  = 1;
+  int32 model_version        = 2;
+}
+
+message ItemScore {
+  string video_id = 1;
+  float  score    = 2;
+}
+
+message ReloadRequest {
+  int32 version = 1;
+}
+
+message ReloadResponse {
+  bool success = 1;
+  string message = 2;
+}

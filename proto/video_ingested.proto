@@ -1,0 +1,14 @@
+syntax = "proto3";
+package siphon;
+option go_package = "github.com/bit2swaz/siphon/proto/gen/go/siphon";
+
+message VideoIngested {
+  string video_id   = 1;
+  string creator_id = 2;
+  int64  created_at = 3;
+  bytes  clip_embed = 4;
+  bytes  text_embed = 5;
+  map<string, string> tags = 6;
+  string category   = 7;
+  float  duration_s = 8;
+}
