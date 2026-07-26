@@ -1,0 +1,14 @@
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+python-multipart==0.0.9
+openai-clip==1.0.1
+faster-whisper==1.1.1
+sentence-transformers>=3.0.1
+confluent-kafka>=2.3.0
+psycopg2-binary==2.9.12
+protobuf>=5.27.0
+Pillow>=10.3.0
+prometheus-client>=0.20.0
+setuptools>=69.5.1
+requests>=2.31.0
+# torch + torchvision installed separately in Dockerfile via CPU wheel index

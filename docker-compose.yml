@@ -85,6 +85,31 @@ services:
       timeout: 5s
       retries: 5
 
+  ingest-service:
+    build:
+      context: .
+      dockerfile: ingest-service/Dockerfile
+    networks: [siphon-net]
+    ports: ["8001:8001"]
+    depends_on:
+      kafka:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: ${POSTGRES_USER:-siphon}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-siphon}
+      POSTGRES_DB: ${POSTGRES_DB:-siphon}
+      WHISPER_MODEL: base
+      CLIP_MODEL: ViT-B/32
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/healthz"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
   prometheus:
     image: prom/prometheus:latest
     networks: [siphon-net]
