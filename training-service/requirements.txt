@@ -1,0 +1,13 @@
+torch==2.11.0
+confluent-kafka==2.4.0
+psycopg2-binary==2.9.9
+qdrant-client==1.9.1
+minio==7.2.7
+httpx==0.27.0
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+scikit-learn==1.9.0
+numpy>=2.0.0
+protobuf==7.35.1
+prometheus-client==0.20.0
+redis==5.0.4
