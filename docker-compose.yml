@@ -196,6 +196,29 @@ services:
       timeout: 5s
       retries: 5
 
+  model-server:
+    build:
+      context: .
+      dockerfile: model-server/Dockerfile
+    networks: [siphon-net]
+    ports: ["8004:8004", "50051:50051"]
+    depends_on:
+      minio:
+        condition: service_healthy
+    environment:
+      MINIO_HOST: minio:9000
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+      GRPC_PORT: "50051"
+      HTTP_PORT: "8004"
+    # CPU-only image (Dockerfile installs torch CPU wheel); no gpus needed.
+    healthcheck:
+      # python:slim has no curl; use stdlib urllib.
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8004/healthz').status==200 else 1)"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
   prometheus:
     image: prom/prometheus:latest
     networks: [siphon-net]
