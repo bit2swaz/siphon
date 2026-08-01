@@ -219,6 +219,32 @@ services:
       timeout: 5s
       retries: 5
 
+  feed-api:
+    build:
+      context: .
+      dockerfile: feed-api/Dockerfile
+    networks: [siphon-net]
+    ports: ["8005:8005"]
+    depends_on:
+      qdrant:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      model-server:
+        condition: service_healthy
+    environment:
+      QDRANT_HOST: qdrant
+      QDRANT_GRPC_PORT: "6334"
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      MODEL_SERVER_ADDR: model-server:50051
+      PORT: "8005"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8005/healthz"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
   prometheus:
     image: prom/prometheus:latest
     networks: [siphon-net]
