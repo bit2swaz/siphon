@@ -245,6 +245,21 @@ services:
       timeout: 5s
       retries: 5
 
+  sim-engine:
+    build: ./sim-engine
+    networks: [siphon-net]
+    depends_on:
+      feed-api:
+        condition: service_healthy
+      user-event-service:
+        condition: service_healthy
+    environment:
+      FEED_API_URL: http://feed-api:8005
+      EVENT_API_URL: http://user-event-service:8002
+      SIM_NUM_USERS: "500"
+      SIM_SPEED_MULTIPLIER: "10.0"
+      KUAIREC_PATH: /app/data/small_matrix.csv
+
   prometheus:
     image: prom/prometheus:latest
     networks: [siphon-net]
