@@ -105,7 +105,7 @@ services:
       WHISPER_MODEL: base
       CLIP_MODEL: ViT-B/32
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8001/healthz"]
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8001/healthz').status==200 else 1)"]
       interval: 15s
       timeout: 5s
       retries: 5
@@ -134,7 +134,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-siphon}
       POSTGRES_DB: ${POSTGRES_DB:-siphon}
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8007/healthz"]
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8007/healthz').status==200 else 1)"]
       interval: 15s
       timeout: 5s
       retries: 5
@@ -191,7 +191,7 @@ services:
       FEATURE_SERVICE_URL: http://feature-service:8007
       MODEL_SERVER_URL: http://model-server:8004
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8003/healthz"]
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8003/healthz').status==200 else 1)"]
       interval: 15s
       timeout: 5s
       retries: 5

@@ -8,7 +8,7 @@ down:
 	docker compose down -v
 
 seed:
-	docker compose run --rm \
+	docker run --rm \
 	  -e PYTHONPATH=/app \
 	  -e POSTGRES_HOST=postgres \
 	  -e POSTGRES_USER=$${POSTGRES_USER:-siphon} \
@@ -21,7 +21,7 @@ seed:
 	  -v $$(pwd)/scripts:/app/scripts \
 	  -v $$(pwd)/proto:/proto \
 	  --network siphon_siphon-net \
-	  python:3.13-slim bash -c "pip install -q psycopg2-binary redis kafka-python qdrant-client minio numpy && python /app/scripts/seed.py"
+	  python:3.13-slim bash -c "pip install -q psycopg2-binary redis confluent-kafka qdrant-client minio numpy && python /app/scripts/seed.py"
 
 test:
 	docker compose -f docker-compose.yml -f docker-compose.test.yml up -d --wait

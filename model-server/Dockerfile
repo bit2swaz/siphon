@@ -10,6 +10,6 @@ RUN pip install --no-cache-dir torch==2.11.0 --index-url https://download.pytorc
     && pip install --no-cache-dir -r requirements.txt
 COPY model-server/src/ ./src/
 COPY proto/gen/python/ ./proto/gen/python/
-ENV PYTHONPATH=/app
+ENV PYTHONPATH=/app:/app/proto/gen/python
 EXPOSE 8004 50051
 CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8004"]
