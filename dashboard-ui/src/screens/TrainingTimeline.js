@@ -1,0 +1,10 @@
+import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+import { useQuery } from '@tanstack/react-query';
+import { fetchTrainingHistory } from '../api';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { useState } from 'react';
+export default function TrainingTimeline() {
+    const { data = [] } = useQuery({ queryKey: ['training'], queryFn: fetchTrainingHistory, refetchInterval: 10000 });
+    const [selected, setSelected] = useState(null);
+    return (_jsxs("div", { style: { padding: 24 }, children: [_jsx("h2", { children: "Training Timeline" }), _jsxs("table", { style: { width: '100%', borderCollapse: 'collapse', fontSize: 13 }, children: [_jsx("thead", { children: _jsx("tr", { children: ['Version', 'AUC', 'Started', 'Status'].map(h => _jsx("th", { style: { textAlign: 'left', borderBottom: '1px solid #ccc', padding: '4px 8px' }, children: h }, h)) }) }), _jsx("tbody", { children: data.map(run => (_jsxs("tr", { onClick: () => setSelected(run), style: { cursor: 'pointer', background: selected?.version === run.version ? '#eef' : 'white' }, children: [_jsxs("td", { style: { padding: '4px 8px' }, children: ["v", run.version] }), _jsx("td", { style: { padding: '4px 8px' }, children: run.auc != null ? run.auc.toFixed(3) : '—' }), _jsx("td", { style: { padding: '4px 8px' }, children: new Date(run.started_at).toLocaleTimeString() }), _jsx("td", { style: { padding: '4px 8px' }, children: run.finished_at ? '✓' : '⏳' })] }, run.version))) })] }), selected?.loss && selected.loss.length > 0 && (_jsxs(_Fragment, { children: [_jsxs("h3", { children: ["v", selected.version, " Loss Curve"] }), _jsx(ResponsiveContainer, { width: "100%", height: 200, children: _jsxs(LineChart, { data: selected.loss.map((l, i) => ({ epoch: i + 1, loss: l })), children: [_jsx(XAxis, { dataKey: "epoch" }), _jsx(YAxis, {}), _jsx(Tooltip, {}), _jsx(Line, { type: "monotone", dataKey: "loss", stroke: "#ff7300", dot: false })] }) })] }))] }));
+}
