@@ -1,4 +1,4 @@
-.PHONY: up down seed test proto lint
+.PHONY: up down seed test proto lint loadtest quality-gate smoke
 
 up:
 	cp -n .env.example .env 2>/dev/null || true
@@ -25,8 +25,17 @@ seed:
 
 test:
 	docker compose -f docker-compose.yml -f docker-compose.test.yml up -d --wait
-	pytest tests/integration/ -v
+	pytest tests/integration/ -v --ignore=tests/integration/test_model_quality.py
 	docker compose -f docker-compose.yml -f docker-compose.test.yml down -v
+
+smoke:
+	pytest tests/integration/test_full_stack.py -v
+
+loadtest:
+	k6 run tests/load/feed_load.js
+
+quality-gate:
+	pytest tests/integration/test_model_quality.py -v -s
 
 proto:
 	./scripts/compile_proto.sh
