@@ -14,7 +14,12 @@ async def run_swarm():
 
 async def _bot_loop(profile, client):
     while True:
-        profile, _ = await run_bot_tick(profile, client)
+        try:
+            profile, _ = await run_bot_tick(profile, client)
+        except Exception as e:
+            # one bad tick shouldn't kill the whole swarm. log, back off, retry.
+            print(f"bot {profile.user_id} tick error: {e}", flush=True)
+            await asyncio.sleep(1)
 
 
 if __name__ == "__main__":
