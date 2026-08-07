@@ -36,7 +36,7 @@ Sixteen services, one `docker compose` network.
 
 ## The model
 
-A two-tower model. One tower embeds users, one embeds items, and their dot product scores a match. This is the same architecture Google published for YouTube retrieval (Yi et al., 2019). The trainer uses BPR (learn to rank a watched item above a skipped one) and only promotes a new model if its AUC clears 0.65.
+A two-tower model. One tower embeds users, one embeds items, and their dot product scores a match. This is the same architecture Google published for YouTube retrieval (Yi et al., 2019). The trainer learns pointwise — binary cross-entropy on "did they watch it or not" (`BCEWithLogitsLoss` over a watched/skipped label) — and only promotes a new model if its AUC clears 0.65.
 
 Items are embedded from their content: CLIP for frames, Whisper for audio, projected to a shared 256-dim space that both training and serving read from the same place. Train and serve never drift.
 
